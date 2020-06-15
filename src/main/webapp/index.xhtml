@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Chart JS - PrimeFaces + PostgreSQL</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="style/style.css" rel="stylesheet" type="text/css"/>
+    </h:head>
+    <h:body>
+        <h2>Resumen COVID-19 - Perú</h2>
+        <div class="row">
+            <div class="col col4">
+                <p:pieChart model="#{pieController.pieModel}"/>
+            </div>
+            <div class="col col4">
+                <p:barChart model="#{interactiveController.barModel2}"/> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col4">
+                <p:lineChart model="#{lineController.lineModel}"/>
+            </div>
+            <div class="col col4">
+                <p:barChart model="#{barController.barModel}"/> 
+            </div>
+        </div>
+    </h:body>
+</html>

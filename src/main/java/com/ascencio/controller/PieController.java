@@ -8,8 +8,10 @@ import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
 import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.pie.PieChartDataSet;
 import org.primefaces.model.charts.pie.PieChartModel;
+import org.primefaces.model.charts.pie.PieChartOptions;
 
 @Named(value = "pieController")
 @ApplicationScoped
@@ -49,13 +51,21 @@ public class PieController implements Serializable {
         dataSet.setBackgroundColor(bgColors);
 
         data.addChartDataSet(dataSet);
-        
+
         //Asignando detalle (label)
         List<String> tipo = new ArrayList<>();
         tipo.add("Infectados");
         tipo.add("Recuperados");
         tipo.add("Muertos");
         data.setLabels(tipo);
+
+        //Opciones
+        PieChartOptions options = new PieChartOptions();
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Resumen Total");
+        options.setTitle(title);
+        pieModel.setOptions(options);
 
         pieModel.setData(data);
     }

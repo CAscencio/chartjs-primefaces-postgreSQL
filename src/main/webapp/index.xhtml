@@ -10,7 +10,7 @@
         <link href="style/style.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
-        <h2>Resumen COVID-19 - Perú</h2>
+        <h2>Situación COVID-19 - Perú</h2>
         <div class="row">
             <div class="col col4">
                 <p:pieChart model="#{pieController.pieModel}"/>
@@ -25,6 +25,14 @@
             </div>
             <div class="col col4">
                 <p:barChart model="#{barController.barModel}"/> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col4">
+                <p:lineChart model="#{lineController.lineModel2}"/>
+            </div>
+            <div class="col col4">
+                <p:donutChart model="#{donutController.donutModel}"/> 
             </div>
         </div>
     </h:body>

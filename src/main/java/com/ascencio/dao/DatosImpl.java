@@ -1,16 +1,39 @@
 package com.ascencio.dao;
 
+import com.ascencio.model.Fallecido;
 import com.ascencio.model.Mensual;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatosImpl extends ConexionDB implements IDatos<Mensual> {
+public class DatosImpl extends ConexionDB implements IDatos<Mensual, Fallecido> {
 
     @Override
-    public List<Mensual> datosChartBar() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Fallecido> datosChartBar() throws Exception {
+        this.conectar();
+        List<Fallecido> listFallecidos;
+        Fallecido fallecido;
+        String sql = "SELECT * FROM public.\"FALLECIDOS_EV\"";
+        try {
+            listFallecidos = new ArrayList();
+            Statement st = this.getConexion().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                fallecido = new Fallecido();
+                fallecido.setIDFALL(rs.getInt("IDFALL"));
+                fallecido.setTIPFALL(rs.getString("TIPFALL"));
+                fallecido.setCANTFALL(rs.getInt("CANTFALL"));
+                listFallecidos.add(fallecido);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+        return listFallecidos;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ascencio.controller;
 
+import com.ascencio.dao.DatosImpl;
+import com.ascencio.model.Fallecido;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -20,64 +22,60 @@ import org.primefaces.model.charts.optionconfig.title.Title;
 @SessionScoped
 public class BarController implements Serializable {
 
+    private DatosImpl datos;
+    List<Fallecido> listaFallecidos;
+
     private BarChartModel barModel;
 
-    public BarController() {
+    public BarController() throws Exception {
+        datos = new DatosImpl();
+        listaFallecidos = new ArrayList();
         this.createBarModel();
     }
 
-    public void createBarModel() {
+    public void createBarModel() throws Exception {
+        listaFallecidos = datos.datosChartBar();
         barModel = new BarChartModel();
         ChartData data = new ChartData();
 
         BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel("My First Dataset");
+        barDataSet.setLabel("Fallecidos");
 
-        List<Number> values = new ArrayList<>();
-        values.add(65);
-        values.add(59);
-        values.add(80);
-        values.add(81);
-        values.add(56);
-        values.add(55);
-        values.add(40);
-        barDataSet.setData(values);
+        //Cargando datos
+        List<String> labels = new ArrayList<>();
+        List<Number> valores = new ArrayList<>();
+        
+        for (Fallecido fallecido : listaFallecidos) {
+            labels.add(fallecido.getTIPFALL());
+            valores.add(fallecido.getCANTFALL());
+        }
 
+        data.setLabels(labels);
+        barDataSet.setData(valores);
+
+        //Definiendo colores para las barras
         List<String> bgColor = new ArrayList<>();
-        bgColor.add("rgba(255, 99, 132, 0.2)");
         bgColor.add("rgba(255, 159, 64, 0.2)");
-        bgColor.add("rgba(255, 205, 86, 0.2)");
-        bgColor.add("rgba(75, 192, 192, 0.2)");
-        bgColor.add("rgba(54, 162, 235, 0.2)");
-        bgColor.add("rgba(153, 102, 255, 0.2)");
-        bgColor.add("rgba(201, 203, 207, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
         barDataSet.setBackgroundColor(bgColor);
 
         List<String> borderColor = new ArrayList<>();
-        borderColor.add("rgb(255, 99, 132)");
         borderColor.add("rgb(255, 159, 64)");
-        borderColor.add("rgb(255, 205, 86)");
-        borderColor.add("rgb(75, 192, 192)");
-        borderColor.add("rgb(54, 162, 235)");
-        borderColor.add("rgb(153, 102, 255)");
-        borderColor.add("rgb(201, 203, 207)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 159, 64)");
         barDataSet.setBorderColor(borderColor);
         barDataSet.setBorderWidth(1);
 
         data.addChartDataSet(barDataSet);
 
-        List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
-        data.setLabels(labels);
         barModel.setData(data);
 
-        //Options
+        //Opciones
         BarChartOptions options = new BarChartOptions();
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
@@ -89,7 +87,7 @@ public class BarController implements Serializable {
 
         Title title = new Title();
         title.setDisplay(true);
-        title.setText("Bar Chart");
+        title.setText("Fallecidos por Etapa de Vida");
         options.setTitle(title);
 
         Legend legend = new Legend();
@@ -97,12 +95,20 @@ public class BarController implements Serializable {
         legend.setPosition("top");
         LegendLabel legendLabels = new LegendLabel();
         legendLabels.setFontStyle("bold");
-        legendLabels.setFontColor("#2980B9");
-        legendLabels.setFontSize(24);
+        legendLabels.setFontColor("#909090");
+        legendLabels.setFontSize(12);
         legend.setLabels(legendLabels);
         options.setLegend(legend);
 
         barModel.setOptions(options);
+    }
+
+    public DatosImpl getDatos() {
+        return datos;
+    }
+
+    public void setDatos(DatosImpl datos) {
+        this.datos = datos;
     }
 
     public BarChartModel getBarModel() {

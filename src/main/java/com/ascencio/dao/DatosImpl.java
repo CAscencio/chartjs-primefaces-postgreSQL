@@ -1,13 +1,14 @@
 package com.ascencio.dao;
 
 import com.ascencio.model.Fallecido;
+import com.ascencio.model.LugarDefuncion;
 import com.ascencio.model.Mensual;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatosImpl extends ConexionDB implements IDatos<Mensual, Fallecido> {
+public class DatosImpl extends ConexionDB implements IDatos<Fallecido, LugarDefuncion, Mensual> {
 
     @Override
     public List<Fallecido> datosChartBar() throws Exception {
@@ -123,5 +124,31 @@ public class DatosImpl extends ConexionDB implements IDatos<Mensual, Fallecido> 
             this.cerrar();
         }
         return listMensual;
+    }
+
+    @Override
+    public List<LugarDefuncion> datosChartDonut() throws Exception {
+        this.conectar();
+        List<LugarDefuncion> listLugarDefuncion;
+        LugarDefuncion lugarDefuncion;
+        String sql = "SELECT * FROM public.\"FL_DEFUNCION\"";
+        try {
+            listLugarDefuncion = new ArrayList();
+            Statement st = this.getConexion().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                lugarDefuncion = new LugarDefuncion();
+                lugarDefuncion.setLUGAR(rs.getString("LUGAR"));
+                lugarDefuncion.setCANT(rs.getInt("CANT"));
+                listLugarDefuncion.add(lugarDefuncion);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+        return listLugarDefuncion;
     }
 }

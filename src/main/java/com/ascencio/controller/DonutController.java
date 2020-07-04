@@ -5,6 +5,8 @@
  */
 package com.ascencio.controller;
 
+import com.ascencio.dao.DatosImpl;
+import com.ascencio.model.LugarDefuncion;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -21,23 +23,32 @@ import org.primefaces.model.charts.optionconfig.title.Title;
 public class DonutController implements Serializable {
 
     private DonutChartModel donutModel;
+    
+    private DatosImpl datos;
+    List<LugarDefuncion> listaLugarDefuncion;
 
-    public DonutController() {
+    public DonutController() throws Exception {
+        datos = new DatosImpl();
+        listaLugarDefuncion = new ArrayList();
         this.createDonutModel();
     }
 
-    public void createDonutModel() {
+    public void createDonutModel() throws Exception {
+        listaLugarDefuncion = datos.datosChartDonut();
         donutModel = new DonutChartModel();
         ChartData data = new ChartData();
 
         DonutChartDataSet dataSet = new DonutChartDataSet();
-        List<Number> values = new ArrayList<>();
-        values.add(24);
-        values.add(14);
-        values.add(12);
-        values.add(9);
-        values.add(8);
-        dataSet.setData(values);
+        List<Number> cantidad = new ArrayList<>();
+        List<String> lugar = new ArrayList<>();
+        
+        for (LugarDefuncion datos : listaLugarDefuncion) {
+            cantidad.add(datos.getCANT());
+            lugar.add(datos.getLUGAR());
+        }
+        
+        dataSet.setData(cantidad);
+        data.setLabels(lugar);
 
         List<String> bgColors = new ArrayList<>();
         bgColors.add("rgb(2, 62, 125)");
@@ -48,13 +59,6 @@ public class DonutController implements Serializable {
         dataSet.setBackgroundColor(bgColors);
 
         data.addChartDataSet(dataSet);
-        List<String> labels = new ArrayList<>();
-        labels.add("MINSA");
-        labels.add("ESSALUD");
-        labels.add("DOMICILIO");
-        labels.add("PNP");
-        labels.add("CLINICA PRIVADA");
-        data.setLabels(labels);
 
         //Opciones
         DonutChartOptions options = new DonutChartOptions();
@@ -62,6 +66,7 @@ public class DonutController implements Serializable {
         Title title = new Title();
         title.setDisplay(true);
         title.setText("Fallecidos por lugar de Difunción");
+        title.setFontSize(15);
         options.setTitle(title);
         donutModel.setOptions(options);
 
@@ -76,4 +81,12 @@ public class DonutController implements Serializable {
         this.donutModel = donutModel;
     }
 
+    public DatosImpl getDatos() {
+        return datos;
+    }
+
+    public void setDatos(DatosImpl datos) {
+        this.datos = datos;
+    }
+    
 }

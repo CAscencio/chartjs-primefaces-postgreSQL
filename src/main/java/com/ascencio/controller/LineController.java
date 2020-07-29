@@ -56,6 +56,7 @@ public class LineController implements Serializable {
         Title title = new Title();
         title.setDisplay(true);
         title.setText("Número de casos activos");
+        title.setFontSize(15);
         options.setTitle(title);
 
         lineModel.setOptions(options);

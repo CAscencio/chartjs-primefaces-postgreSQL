@@ -64,6 +64,7 @@ public class PieController implements Serializable {
         Title title = new Title();
         title.setDisplay(true);
         title.setText("Resumen Total");
+        title.setFontSize(15);
         options.setTitle(title);
         pieModel.setOptions(options);
 

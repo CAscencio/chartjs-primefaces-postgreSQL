@@ -88,6 +88,7 @@ public class BarController implements Serializable {
         Title title = new Title();
         title.setDisplay(true);
         title.setText("Fallecidos por Etapa de Vida");
+        title.setFontSize(15);
         options.setTitle(title);
 
         Legend legend = new Legend();

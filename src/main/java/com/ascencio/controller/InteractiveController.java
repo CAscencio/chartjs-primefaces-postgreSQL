@@ -90,6 +90,7 @@ public class InteractiveController implements Serializable {
         Title title = new Title();
         title.setDisplay(true);
         title.setText("Datos por mes");
+        title.setFontSize(15);
         options.setTitle(title);
 
         barModel2.setOptions(options);
